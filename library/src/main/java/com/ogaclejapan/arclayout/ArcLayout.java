@@ -154,7 +154,7 @@ public class ArcLayout extends ViewGroup {
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
             float childAngle;
             if (isFreeAngle) {
-                childAngle = arc.startAngle + lp.angle;
+                childAngle = arc.getStartAngle() + lp.angle;
             } else if (isReverseAngle) {
                 childAngle = arc.computeReverseDegrees(arcIndex++, perDegrees);
             } else {
