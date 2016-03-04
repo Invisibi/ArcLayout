@@ -24,7 +24,7 @@ import static android.os.Build.VERSION_CODES.LOLLIPOP;
 
 class Utils {
 
-    static final boolean DEBUG = true; //Set to true only when developing
+    static final boolean DEBUG = false; //Set to true only when developing
 
     static final boolean JELLY_BEAN_MR1_OR_LATER = Build.VERSION.SDK_INT >= JELLY_BEAN_MR1;
     static final boolean LOLLIPOP_OR_LATER = Build.VERSION.SDK_INT >= LOLLIPOP;

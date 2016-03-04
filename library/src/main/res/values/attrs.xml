@@ -23,6 +23,8 @@
         <attr name="arc_reverseAngle" format="boolean"/>
         <attr name="arc_border_color" format="color"/>
         <attr name="arc_border_width" format="dimension"/>
+        <attr name="arc_width_extend" format="dimension"/>
+        <attr name="arc_height_extend" format="dimension"/>
     </declare-styleable>
 
     <declare-styleable name="arc_ArcLayout_Layout">

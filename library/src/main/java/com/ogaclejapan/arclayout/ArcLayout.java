@@ -49,6 +49,8 @@ public class ArcLayout extends ViewGroup {
     private Point size = new Point();
     private boolean isFreeAngle = DEFAULT_FREE_ANGLE;
     private boolean isReverseAngle = DEFAULT_REVERSE_ANGLE;
+    private int widthExtend = 0;
+    private int heightExtend = 0;
 
     public ArcLayout(Context context) {
         this(context, null);
@@ -91,6 +93,10 @@ public class ArcLayout extends ViewGroup {
                 R.styleable.arc_ArcLayout_arc_border_color, DEFAULT_BORDER_COLOR);
         int arcBorderWidth = a.getDimensionPixelSize(
                 R.styleable.arc_ArcLayout_arc_border_width, DEFAULT_BORDER_WIDTH);
+        int arcWidthExtend = a.getDimensionPixelSize(
+                R.styleable.arc_ArcLayout_arc_width_extend, 0);
+        int arcHeightExtend = a.getDimensionPixelSize(
+                R.styleable.arc_ArcLayout_arc_height_extend, 0);
         a.recycle();
 
         if (Utils.JELLY_BEAN_MR1_OR_LATER) {
@@ -104,7 +110,8 @@ public class ArcLayout extends ViewGroup {
         axisRadius = arcAxisRadius;
         isFreeAngle = isArcFreeAngle;
         isReverseAngle = isArcReverseAngle;
-
+        widthExtend = arcWidthExtend;
+        heightExtend = arcHeightExtend;
     }
 
     @Override
@@ -115,8 +122,14 @@ public class ArcLayout extends ViewGroup {
                     MeasureSpec.toString(heightMeasureSpec));
         }
 
-        size.x = Utils.computeMeasureSize(widthMeasureSpec, arcDrawable.getIntrinsicWidth());
-        size.y = Utils.computeMeasureSize(heightMeasureSpec, arcDrawable.getIntrinsicHeight());
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+
+
+        size.x = Utils.computeMeasureSize(MeasureSpec.makeMeasureSpec(width + widthExtend, widthMode), arcDrawable.getIntrinsicWidth());
+        size.y = Utils.computeMeasureSize(MeasureSpec.makeMeasureSpec(height + heightExtend, heightMode), arcDrawable.getIntrinsicHeight());
 
         setMeasuredDimension(size.x, size.y);
 
@@ -179,6 +192,23 @@ public class ArcLayout extends ViewGroup {
 
         super.onDraw(canvas);
         arcDrawable.draw(canvas);
+    }
+
+    public int getHeightExtend() {
+        return heightExtend;
+    }
+
+    public void setHeightExtend(int heightExtend) {
+        this.heightExtend = heightExtend;
+    }
+
+    public int getWidthExtend() {
+        return widthExtend;
+    }
+
+    public void setWidthExtend(int widthExtend) {
+        this.widthExtend = widthExtend;
+        requestLayout();
     }
 
     public int getArcColor() {
@@ -325,8 +355,6 @@ public class ArcLayout extends ViewGroup {
 
         final int width = child.getMeasuredWidth();
         final int height = child.getMeasuredHeight();
-
-        Utils.d(TAG, "child size: " + width + "x" + height);
 
         int left;
         switch (origin & ArcOrigin.HORIZONTAL_MASK) {
